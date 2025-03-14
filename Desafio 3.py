@@ -1,10 +1,13 @@
 import requests
 import pandas as pd
 
+ACCESS_TOKEN = "APP_USR-4207752727981094-031400-5650e977a5dfda4ba1066c81c03de301-288368966"
 # Função para buscar itens de um termo de pesquisa
 def buscar_produtos(termo_busca, limite=50):
     url = f"https://api.mercadolibre.com/sites/MLA/search?q={termo_busca}&limit={limite}"
-    response = requests.get(url)
+    headers = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
+    response = requests.get(url, headers=headers)
+    print(response)
     if response.status_code == 200:
         return response.json()['results']
     else:
@@ -13,7 +16,8 @@ def buscar_produtos(termo_busca, limite=50):
 # Função para obter detalhes de cada produto
 def obter_detalhes_produto(item_id):
     url = f"https://api.mercadolibre.com/items/{item_id}"
-    response = requests.get(url)
+    headers = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
+    response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
     else:
@@ -61,6 +65,6 @@ for termo in termos_busca:
         todos_dados.append(dados_produto)
 
 # Salvar os dados em um arquivo CSV
-salvar_dados_em_csv(todos_dados, r'C:\Users\guilh\OneDrive\Área de Trabalho\Desafio ML\mercadolibre_produtos.csv')
+salvar_dados_em_csv(todos_dados, r'D:\Desafio ML\3\mercadolibre_produtos.csv')
 
 print("Análise concluída e dados salvos em 'mercadolibre_produtos.csv'.")
